@@ -12,14 +12,6 @@ const App = () => {
     neutral: 0,
     bad: 0
   });
-
-  useEffect(() => {
-    const savedFeedback = JSON.parse(localStorage.getItem('feedback'));
-    if (savedFeedback) {
-      setFeedback(savedFeedback);
-    }
-  }, []);
-
   useEffect(() => {
     localStorage.setItem('feedback', JSON.stringify(feedback));
   }, [feedback]);

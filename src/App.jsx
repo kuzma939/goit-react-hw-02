@@ -5,31 +5,40 @@ import Feedback from "./components/Feedback/Feedback";
 import Description from "./components/Description/Description";
 import Notification from "./components/Notification/Notification";
 
-
-const App = () => {
-  const [feedback, setFeedback] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0
+function App() {
+  const [feedback, setFeedback] = useState(() => {
+    const saveValue = JSON.parse(localStorage.getItem("saved-values")) ?? {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    };
+    return saveValue;
   });
+
+  const updateFeedback = (option) => {
+    setFeedback({
+      ...feedback,
+      [option]: feedback[option] + 1,
+    });
+  };
+
   useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedback));
+    localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
 
-  const updateFeedback = (feedbackType) => {
-    setFeedback((prevFeedback) => ({
-      ...prevFeedback,
-      [feedbackType]: prevFeedback[feedbackType] + 1
-    }));
-  };
-
-  const resetFeedback = () => {
-    setFeedback({ good: 0, neutral: 0, bad: 0 });
-  };
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-  const positivePercentage = totalFeedback > 0 ? Math.round((feedback.good / totalFeedback) * 100) : 0;
+  const positiveFeedback = Math.round((feedback.good / totalFeedback) * 100);
+  const resetFeedback = () => {
+    setFeedback({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+  };
 
-  <div>
+  return (
+    <>
+     
       <Description />
       <Options onFeedback={updateFeedback} onReset={resetFeedback} totalFeedback={totalFeedback} />
       {totalFeedback > 0 ? (
@@ -38,13 +47,15 @@ const App = () => {
           neutral={feedback.neutral} 
           bad={feedback.bad} 
           total={totalFeedback} 
-          positivePercentage={positivePercentage} 
+          positivePercentage={positiveFeedback} 
         />
       ) : (
         <Notification />
       )}
-    </div>
-};
+  
+      
+    </>
+  );
+}
 
 export default App;
-

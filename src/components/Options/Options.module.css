@@ -1,0 +1,15 @@
+.button {
+    width: 150px;
+    height: 70px;
+    color:black;
+    background-color: rgb(228, 226, 226);
+    border-color: rgb(210, 207, 207);
+    font-size: 22px;
+
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
